@@ -1,0 +1,7 @@
+export const FETCH_POSTS = 'FETCH_POSTS'
+export const FETCH_GUNS = 'FETCH_GUNS'
+export const FETCH_STAT = 'FETCH_STAT'
+export const CHANGE_PLATFORM = 'CHANGE_PLATFORM'
+export const CHANGE_NICKNAME = 'CHANGE_NICKNAME'
+export const CHANGE_LOADING = 'CHANGE_LOADING'
+export const ERROR_STAT = 'ERROR_STAT'
