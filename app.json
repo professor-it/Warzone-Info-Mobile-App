@@ -3,13 +3,19 @@
     "name": "Warzone Info",
     "slug": "warzone-info",
     "privacy": "public",
-    "platforms": ["ios", "android"],
+    "platforms": ["android"],
     "version": "1.0.0",
     "orientation": "portrait",
+    "androidStatusBar": {
+      "backgroundColor": "#000000",
+      "barStyle": "light-content"
+    },
     "icon": "./assets/icon.png",
+    "backgroundColor": "#000000",
     "splash": {
       "resizeMode": "contain",
-      "backgroundColor": "#000000"
+      "backgroundColor": "#000000",
+      "image": "./assets/splash2.png"
     },
     "updates": {
       "fallbackToCacheTimeout": 0
@@ -17,6 +23,10 @@
     "assetBundlePatterns": [
       "**/*"
     ],
-    "android": {}
+    "android": {
+      "config": {
+        "googleMobileAdsAppId": "ca-app-pub-3940256099942544/8691691433"
+      }
+    }
   }
 }

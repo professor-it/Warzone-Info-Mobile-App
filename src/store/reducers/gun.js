@@ -1,4 +1,4 @@
-import {FETCH_GUNS} from '../types'
+import {ADS_GUN} from '../types'
 
 const initialState = {
 	gunInfo: [
@@ -149,9 +149,25 @@ const initialState = {
 			}
 		}
 	},
+	ads: 0,
 	loading: true,
 }
 
 export const gunReducer = (state = initialState, action) => {
+	switch (action.type) {
+		case ADS_GUN:
+			if (state.ads < 1) {
+				return {
+					...state,
+					ads: state.ads + 1
+				}
+			}
+			if (state.ads === 1) {
+				return {
+					...state,
+					ads: 0
+				}
+			}
+	}
 	return state
 }

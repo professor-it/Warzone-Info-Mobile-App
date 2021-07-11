@@ -1,6 +1,8 @@
 import React from 'react'
+import {Easing} from 'react-native'
 import {createAppContainer} from 'react-navigation'
 import {createStackNavigator} from 'react-navigation-stack'
+import {CardStyleInterpolators} from '@react-navigation/stack'
 import {createBottomTabNavigator} from 'react-navigation-tabs'
 import {Ionicons} from '@expo/vector-icons'
 import {HomeScreen} from '../screens/HomeScreen'
@@ -8,11 +10,10 @@ import {PostScreen} from '../screens/PostScreen'
 import {THEME} from '../theme'
 import {HeaderButtons, Item} from 'react-navigation-header-buttons'
 import {AppHeaderIcon} from '../components/AppHeaderIcon'
-import {GunListScreen, GunLoadoutScreen, GunScreen, VersionScreen} from '../screens/GunScreen'
+import {ErrorGunScreen, GunListScreen, GunLoadoutScreen, GunScreen, VersionScreen} from '../screens/GunScreen'
 import {InfoScreen} from '../screens/InfoScreen'
 import {GunDetailScreen} from '../screens/GunDetailScreen'
 import {StatScreen} from '../screens/StatScreen'
-
 
 const styleTopNav = {
 	defaultNavigationOptions: ({navigation}) => ({
@@ -26,13 +27,31 @@ const styleTopNav = {
 			fontFamily: 'open-bold'
 		},
 		headerTintColor: THEME.TEXT_COLOR,
+		cardStyleInterpolator: CardStyleInterpolators.forScaleFromCenterAndroid,
+		transitionSpec: {
+			open: {
+				animation: 'timing',
+				config: {
+					duration: 200,
+					easing: Easing.linear
+				}
+			},
+			close: {
+				animation: 'timing',
+				config: {
+					duration: 200,
+					easing: Easing.linear
+				}
+			}
+		},
+		cardStyle: { opacity: 1},
 		headerRight: () => (
 			<HeaderButtons HeaderButtonComponent={AppHeaderIcon}>
 				<Item title='Gun' iconName='information-circle-outline'
 					  onPress={() => navigation.navigate('Info')}/>
 			</HeaderButtons>
 		),
-	})
+	}),
 }
 
 const PostNavigator = createStackNavigator({
@@ -47,7 +66,8 @@ const GunNavigator = createStackNavigator({
 	GunList: GunListScreen,
 	GunLoadout: GunLoadoutScreen,
 	GunDetail: GunDetailScreen,
-	Info: InfoScreen
+	Info: InfoScreen,
+	ErrorGun: ErrorGunScreen
 }, styleTopNav)
 
 const StatNavigator = createStackNavigator({
@@ -65,8 +85,8 @@ const BottomNavigator = createBottomTabNavigator({
 				name='newspaper-outline'
 				size={22}
 				color={info.tintColor}
-			/>
-		}
+			/>,
+		},
 	},
 	Gun: {
 		screen: GunNavigator,
@@ -103,8 +123,8 @@ const BottomNavigator = createBottomTabNavigator({
 		labelStyle: {
 			fontFamily: 'open-regular',
 			fontSize: 10
-		}
-	}
+		},
+	},
 })
 
 export const AppNavigation = createAppContainer(BottomNavigator)

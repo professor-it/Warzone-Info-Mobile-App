@@ -45,7 +45,6 @@ const styles = StyleSheet.create({
 	text: {
 		color: THEME.TEXT_COLOR,
 		fontFamily: 'open-regular',
-		fontStyle: 'italic',
 		lineHeight: 32,
 		fontSize: 15
 	}

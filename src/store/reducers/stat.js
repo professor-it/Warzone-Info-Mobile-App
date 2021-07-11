@@ -42,7 +42,6 @@ const initialState = {
 export const statReducer = (state = initialState, action) => {
 	switch (action.type) {
 		case FETCH_STAT:
-
 			return {
 				...state,
 				stats: action.payload,

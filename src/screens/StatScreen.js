@@ -1,8 +1,22 @@
 import React from 'react'
-import {View, Text, StyleSheet, TextInput, Pressable, ActivityIndicator, ScrollView} from 'react-native'
+import {
+	View,
+	Text,
+	StyleSheet,
+	TextInput,
+	Pressable,
+	ActivityIndicator,
+	ScrollView,
+	TouchableOpacity
+} from 'react-native'
 import {useDispatch, useSelector} from 'react-redux'
 import {THEME} from '../theme'
 import {changeBattleNick, changePlatform, loadStat} from '../store/actions/stat'
+import {InstructionsStat} from '../components/InstructionsStat'
+import {HeaderButtons, Item} from 'react-navigation-header-buttons'
+import {AppHeaderIcon} from '../components/AppHeaderIcon'
+import {AdMobInterstitial} from 'expo-ads-admob'
+import {ads} from '../store/actions/gun'
 
 const formatDate = (date) => {
 	const dd = new Date(date)
@@ -114,7 +128,7 @@ const InfoProfile = (infoProfile) => {
 	)
 }
 
-const NUser = (nuser, infoProfile) => {
+const NUser = ({nuser, infoProfile, info, onChange}) => {
 	return (
 		<View>
 			<View style={styles.noUser}>
@@ -123,6 +137,27 @@ const NUser = (nuser, infoProfile) => {
 						<Text key={index} style={styles.noUserText}>{e.text}</Text>
 					)
 				})}
+				<TouchableOpacity
+					activeOpacity={0.7}
+					style={styles.buttonInfo}
+					onPress={onChange}
+				>
+					<Text style={styles.buttonInfoText}>
+						{info ? 'Закрыть ' : 'Открыть '}
+						инструкцию
+					</Text>
+					<HeaderButtons HeaderButtonComponent={AppHeaderIcon}>
+						<Item
+							title='arrow'
+							iconName={info
+								? 'arrow-down-outline'
+								: 'arrow-forward-outline'
+							}
+							onPress={onChange}
+						/>
+					</HeaderButtons>
+				</TouchableOpacity>
+				{info ? <InstructionsStat/> : null}
 			</View>
 			{InfoProfile(infoProfile)}
 		</View>
@@ -145,6 +180,14 @@ export const StatScreen = () => {
 	const allStats = useSelector(state => state.stat.stats)
 	const loading = useSelector(state => state.stat.loading)
 	const error = useSelector(state => state.stat.error)
+
+	const [info, setInfo] = React.useState(false)
+
+	const adsView = useSelector(state => state.gun.ads)
+
+	function onChange() {
+		setInfo(!info)
+	}
 
 	const loader = () => {
 		return (
@@ -199,7 +242,13 @@ export const StatScreen = () => {
 					},
 					styles.button
 				]}
-				onPress={() => {
+				onPress={async () => {
+					if (adsView === 1) {
+						await AdMobInterstitial.setAdUnitID('ca-app-pub-3940256099942544/8691691433')
+						await AdMobInterstitial.requestAdAsync({servePersonalizedAds: true})
+						await AdMobInterstitial.showAdAsync()
+					}
+					dispatch(ads())
 					dispatch(loadStat(user.platform, user.battleNick, true))
 				}}
 			>
@@ -210,7 +259,12 @@ export const StatScreen = () => {
 				: allStats
 					? stats(allStats)
 					: error
-						? NUser(nuser, infoProfile)
+						? <NUser
+							nuser={nuser}
+							infoProfile={infoProfile}
+							info={info}
+							onChange={onChange}
+						/>
 						: InfoProfile(infoProfile)
 			}
 		</ScrollView>
@@ -322,7 +376,7 @@ const styles = StyleSheet.create({
 		fontSize: 10
 	},
 	noUser: {
-		borderWidth: 3,
+		borderWidth: 2,
 		borderColor: 'red',
 		borderRadius: 10,
 		paddingVertical: 15,
@@ -334,7 +388,8 @@ const styles = StyleSheet.create({
 		fontFamily: 'open-bold',
 		textAlign: 'justify',
 		marginVertical: 4,
-		fontSize: 12
+		fontSize: 13,
+		lineHeight: 19
 	},
 	noUserTextH1: {
 		color: '#fff',
@@ -344,10 +399,26 @@ const styles = StyleSheet.create({
 		fontSize: 20
 	},
 	infoProfile: {
-		borderWidth: 3,
+		borderWidth: 2,
 		borderColor: '#fff',
-		borderRadius: 10,
+		borderRadius: 20,
 		paddingVertical: 15,
 		paddingHorizontal: 20
 	},
+	buttonInfo: {
+		borderBottomWidth: 2,
+		borderColor: 'red',
+		borderRadius: 6,
+		paddingBottom: 10,
+		paddingHorizontal: 15,
+		marginVertical: 20,
+		flexDirection: 'row',
+		alignItems: 'center',
+		justifyContent: 'space-between'
+	},
+	buttonInfoText: {
+		color: '#fff',
+		fontFamily: 'open-bold',
+		fontSize: 16
+	}
 })
