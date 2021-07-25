@@ -211,7 +211,7 @@ export const HomeScreen = ({navigation}) => {
 					return (
 						<View style={{width, paddingHorizontal: 10}}>
 							<FlatList
-								data={post}
+								data={post.sort((a, b) => new Date(b.date) - new Date(a.date))}
 								refreshing={true}
 								keyExtractor={(el, index) => index.toString()}
 								renderItem={({item}) => <Post post={item} onOpen={openPostHandler}/>}

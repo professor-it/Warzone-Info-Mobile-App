@@ -12,7 +12,7 @@ export const PostScreen = ({navigation}) => {
 				<Image source={{uri: post.img}} style={styles.img}/>
 			</View>
 			<View style={styles.wrapper}>
-				<Text style={styles.title}>{post.text}</Text>
+				<Text style={styles.title}>{post.title}</Text>
 				<Text style={styles.desc}>{post.desc}</Text>
 				<Text style={styles.text}>{post.text}</Text>
 			</View>

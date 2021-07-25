@@ -42,7 +42,7 @@ return (
 				</View>
 				<View style={styles.textTitle}>
 					<Text style={styles.title}>
-						{post.text}
+						{post.title}
 					</Text>
 					<Text style={styles.desc}>
 						{post.desc}
@@ -58,11 +58,14 @@ const styles = StyleSheet.create({
 	post: {
 		marginVertical: 15,
 		overflow: 'hidden',
-		borderRadius: 10,
+		borderTopRightRadius: 10,
+		borderTopLeftRadius: 10,
+		borderBottomRightRadius: 5,
+		borderBottomLeftRadius: 5,
 		marginHorizontal: 5,
 		height: 400,
-		borderWidth: 1,
-		borderColor: THEME.BORDER_COLOR,
+		borderBottomWidth: 2,
+		borderColor: '#999',
 	},
 	img: {
 		flex: 1,
